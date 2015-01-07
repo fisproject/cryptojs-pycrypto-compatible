@@ -64,7 +64,7 @@ CryptoJS.mode.CFB = (function () {
     return CFB;
 }());
 
-function aesEnccryptModeCFB (msg, key, iv) {
+function aesEncryptModeCFB (msg, key, iv) {
     return AES.encrypt(msg, key, {iv: iv, mode: CryptoJS.mode.CFB}).toString()
 }
 
@@ -81,10 +81,10 @@ var encrypted = {
 var key = CryptoJS.enc.Hex.parse(encrypted.key)
 var iv = CryptoJS.enc.Hex.parse(encrypted.iv)
 var cipher = CryptoJS.lib.CipherParams.create({
-        ciphertext: CryptoJS.enc.Base64.parse(encrypted.ciphertext)
-    })
+    ciphertext: CryptoJS.enc.Base64.parse(encrypted.ciphertext)
+})
 
 console.log(aesDecryptModeCFB(cipher, key, iv))
 // => fisproject
-console.log(aesEnccryptModeCFB('fisproject', key, iv))
+console.log(aesEncryptModeCFB('fisproject', key, iv))
 // => r19YcF8gc8bgk5NNui6I3w==
