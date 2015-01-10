@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-from AES_Compatible_Cryptjs import Cryptor
+from AES_PKCS7_Extension import Cryptor
 import binascii
 
 iv, encrypted = Cryptor.encrypt('fisproject', Cryptor.KEY)

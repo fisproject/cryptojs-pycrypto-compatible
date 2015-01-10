@@ -2,67 +2,8 @@
 
 'use strict';
 
-var CryptoJS = require("crypto-js");
 var AES = require("crypto-js/aes");
-
-/**
- * Cipher Feedback block mode.
- */
-CryptoJS.mode.CFB = (function () {
-    var CFB = CryptoJS.lib.BlockCipherMode.extend();
-
-    CFB.Encryptor = CFB.extend({
-        processBlock: function (words, offset) {
-            // Shortcuts
-            var cipher = this._cipher;
-            var blockSize = cipher.blockSize;
-
-            generateKeystreamAndEncrypt.call(this, words, offset, blockSize, cipher);
-
-            // Remember this block to use with next block
-            this._prevBlock = words.slice(offset, offset + blockSize);
-        }
-    });
-
-    CFB.Decryptor = CFB.extend({
-        processBlock: function (words, offset) {
-            // Shortcuts
-            var cipher = this._cipher;
-            var blockSize = cipher.blockSize;
-
-            // Remember this block to use with next block
-            var thisBlock = words.slice(offset, offset + blockSize);
-
-            generateKeystreamAndEncrypt.call(this, words, offset, blockSize, cipher);
-
-            // This block becomes the previous block
-            this._prevBlock = thisBlock;
-        }
-    });
-
-    function generateKeystreamAndEncrypt(words, offset, blockSize, cipher) {
-        // Shortcut
-        var iv = this._iv;
-
-        // Generate keystream
-        if (iv) {
-            var keystream = iv.slice(0);
-
-            // Remove IV for subsequent blocks
-            this._iv = undefined;
-        } else {
-            var keystream = this._prevBlock;
-        }
-        cipher.encryptBlock(keystream, 0);
-
-        // Encrypt
-        for (var i = 0; i < blockSize; i++) {
-            words[offset + i] ^= keystream[i];
-        }
-    }
-
-    return CFB;
-}());
+var CryptoJS = require("./crypto-js/cfb.js")
 
 function aesEncryptModeCFB (msg, key, iv) {
     return AES.encrypt(msg, key, {iv: iv, mode: CryptoJS.mode.CFB}).toString()

@@ -71,7 +71,7 @@ class Cryptor(object):
     @classmethod
     def decrypt(cls, in_encrypted, in_key, in_iv):
         '''
-        Return encrypted string.
+        Return decrypted string.
         @in_encrypted: Base64 encoded 
         @key: hexified key
         @iv: hexified iv
